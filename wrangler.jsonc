@@ -1,0 +1,8 @@
+{
+  "name": "product-site",
+  "compatibility_date": "2026-02-29",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public"
+  }
+}
