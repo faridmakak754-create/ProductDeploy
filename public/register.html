@@ -7,7 +7,7 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <title>Document</title>
+    <title>FDD Store</title>
 </head>
 
 <body>
@@ -38,10 +38,19 @@
                 <!-- password -->
                 <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center">
                     <legend class="px-2 text-sm text-gray-600 font-medium">Password</legend>
-                    <input type="password" placeholder="*******" class="w-full outline-none px-3 ">
-                    <i class="fa-solid fa-eye pr-3 text-blue-400"></i>
-                </fieldset>
+                    <input type="password"
+                    id="password"
+                     placeholder="*******" 
+                     class="w-full outline-none px-3 "
+                     >
+                    <i id="eye" 
+                    class="fa-solid fa-eye pr-3 text-blue-400 cursor-pointer"
+                    onclick="togglePassword()"
+                    >
+                
+                </i>
 
+                </fieldset>
 
                 <!-- submit -->
                 <button
@@ -66,6 +75,22 @@
     </section>
     <div id="footer"></div>
     <script src="main.js"></script>
+    <script>
+
+        function togglePassword(){
+            const password =document.getElementById("password");
+            const eye =document.getElementById("eye");
+
+            if(password.type ==="password"){
+                password.type ="text";
+                eye.classList.replace("fa-eye", "fa-eye-slash");
+            }
+            else{
+                password.type ="password";
+                eye.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+    </script>uuuu
 </body>
 
 </html>
