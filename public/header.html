@@ -1,0 +1,112 @@
+    <header class="bg-gray-100">
+        <div class="">
+            <!-- top -->
+            <div class="max-w-[90%] h-20 mx-auto flex justify-between items-center gap-3 py-3 max-sm:py-1">
+                <img src="photo/logo.png" alt="logo" class="h-19 w-36 object-cover ">
+
+                <div class="relative max-lg:hidden">
+                    <input type="text" placeholder="Search for Products"
+                        class=" max-md:w-80 max-sm:w-50 max-sm:text-sm max-sm:p-1 max-sm:h-8 
+                        h-10 px-3 w-100  bg-white outline-none rounded-full shadow-sm shadow-gray-200 hover:shadow-blue-400 focus:shadow-red-500">
+                    <i class=" fas fa-search absolute right-3 top-3 max-sm:text-xs "></i>
+                </div>
+
+
+                <div class="flex items-center gap-6 max-lg:hidden">
+
+                    <i class="fa-regular fa-heart text-gray-600 text-lg hover:text-gray-900"></i>
+                    <i class="fa-solid fa-cart-shopping text-gray-600 text-lg hover:text-gray-900"></i>
+                    <button 
+                        class="shadow-md px-6 h-8 font-semibold rounded-sm bg-blue-600 text-white hover:animate-pulse">
+                      <a href="login.html">Login</a>
+                    </button>
+                </div>
+                <!-- handburger -->
+                <div onclick="openClose()" class="lg:hidden text-2xl ">
+                    <!-- <i class="fa-solid fa-bars"></i> -->
+                     <svg xmlns="http://www.w3.org/2000/svg"
+                      width="20" height="20" viewBox="0 0 24 24" 
+                      fill="none" stroke="currentColor" stroke-width="2" 
+                      stroke-linecap="round" stroke-linejoin="round" 
+                      class="lucide lucide-settings2 lucide-settings-2" 
+                      aria-hidden="true"><path d="M14 17H5"></path>
+                      <path d="M19 7h-9"></path>
+                      <circle cx="17" cy="17" r="3"></circle>
+                      <circle cx="7" cy="7" r="3"></circle>
+                    </svg>
+
+                  
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <hr class="text-gray-300 max-lg:hidden">
+        <!-- nav -->
+        <nav class=" py-4 max-lg:hidden">
+            <div class="max-w-[85%] mx-auto text-blue-800 flex items-center justify-center gap-6">
+                <a href="index.html"
+                    class="font-semibold border-b-2 border-transparent hover:text-blue-600 hover:border-slate-400 ">Home</a>
+                <a href="product.html"
+                    class="font-semibold border-b-2 border-transparent  hover:text-blue-600 hover:border-slate-400">Products</a>
+                <a href=""
+                    class="font-semibold border-b-2 border-transparent  hover:text-blue-600 hover:border-slate-400">Feature</a>
+                <a href=""
+                    class="font-semibold border-b-2 border-transparent hover:text-blue-600  hover:border-slate-400">About</a>
+                <a href=""
+                    class="font-semibold border-b-2 border-transparent hover:text-blue-600  hover:border-slate-400">Contact</a>
+            </div>
+
+        </nav>
+        <!-- mobile -->
+        <div id="sidebar"
+            class="bg-slate-700  min-h-screen w-64 absolute top-0 z-50 py-6 px-4 -left-0 -left-64 transition-all duration-500 ease-in-out">
+            <div class="flex items-center justify-between mb-6">
+                 <h1 class="text-2xl font-bold bg-gradient-to-br from-gray-200 via-blue-500 to-blue-400 bg-clip-text text-transparent">User 's Pannel</h1>
+                <div onclick="openClose()"> 
+                    <i class="fa-solid fa-close  text-xl text-gray-50"></i>
+                </div>
+            </div>
+           
+            
+            <div class=" relative">
+                <input type="text" placeholder="Search for Products"
+                    class="
+                        h-10 px-3 w-56  bg-white  outline-none rounded-full shadow-sm shadow-gray-200 hover:shadow-blue-400 focus:shadow-red-500">
+                <i class=" fas fa-search absolute right-3 top-3 max-sm:text-xs "></i>
+
+
+            </div>
+
+            <div class="flex flex-col items-center pt-5 gap-5">
+                <a href="index.html"
+                    class="font-semibold text-white ">Home</a>
+                <a href="product.html"
+                    class="font-semibold text-white ">Products</a>
+                <a href=""
+                    class="font-semibold text-white ">Features</a>
+                <a href=""
+                    class="font-semibold text-white ">About</a>
+                <a href=""
+                    class="font-semibold text-white ">Contact</a>
+
+
+                <a href="login.html"
+                    class="shadow-md px-6 h-10 w-40 font-semibold text-center py-1  rounded-full bg-blue-700 text-white hover:bg-indigo-800">Login</a>
+
+
+
+            </div>
+            <hr class="mt-5 text-gray-300 font-extra-bold  border ">
+
+            <div class="flex gap-3 pt-5 justify-center items-center">
+
+                <i class="fa-solid fa-cart-shopping text-4xl text-white/90"></i>
+            </div>
+        </div>
+        <!-- overlay -->
+        <div id="overlay"
+             class="fixed inset-0 bg-black/50 hidden z-40"
+             onclick="openClose()">
+        </div>
+    </header>

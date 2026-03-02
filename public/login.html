@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="header"></div>
+    <section class="max-w-[90%] mx-auto">
+        <div class="max-w-100 mx-auto my-20 shadow-sm rounded-xl border border-black/5  aspect-square  p-5 space-y-2">
+            <div>
+                <h1 class="text-2xl text-blue-800">Welcome Back !</h1>
+                <p class="text-sm text-gray-400">Please enter your details </p>
+            </div>
+            
+            <form class=" grid gap-4  ">
+                <!-- email -->
+                <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center ">
+                    <legend class="px-2 text-sm text-gray-600 font-medium ">Email</legend>
+                    <input type="email" placeholder="example@gmail.com" class="w-full outline-none  px-3">
+                    <i class="fa-solid fa-envelope pr-3 text-blue-400"></i>
+                </fieldset>
+
+                <!-- password -->
+                <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center">
+                    <legend class="px-2 text-sm text-gray-600 font-medium">Password</legend>
+                    <input type="password" placeholder="*******" class="w-full outline-none px-3 ">
+                    <i class="fa-solid fa-eye pr-3 text-blue-400"></i>
+                </fieldset>
+
+                <div class="flex justify-between">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox">
+                        <p>Remember me</p>
+                    </div>
+                    
+                    <a href="" class="text-blue-700 ">
+                        forgot password ?
+                    </a>
+                </div>
+
+                <!-- submit -->
+                <button
+                    type="submit" 
+                    class="bg-blue-500 py-2 text-white font-medium mt-4 mb-2 rounded-md">
+                    Login
+                 </button>
+                 <a href="register.html"
+                     class= "text-center"
+                >
+                    Don't have an account? 
+                    <span class="text-blue-600 font-semibold">
+                         Register
+                    </span>
+                </a>
+            </form>
+           
+        </div>
+    </section>
+    <div id="footer"></div>
+    <script src="main.js"></script>
+</body>
+
+</html>
