@@ -31,7 +31,7 @@
 <div id="header"></div>
     <!-- recently added Product -->
     <section class="bg-white">
-        <div class="max-w-[90%] mx-auto pb-16 pt-24">
+        <div class="max-w-[90%] mx-auto pb-16 pt-24 max-md:py-8">
             <h1 class="text-xl font-semibold pb-6">Recently Added Products</h1>
             <div id="recentlyProduct" class="flex gap-3 overflow-x-scroll no-scrollbar">
 
@@ -43,53 +43,25 @@
 
     <!-- mobile -->
     <section id="sports" class="bg-blue-50">
-        <div class="max-w-[90%] mx-auto pb-16 pt-24">
+        <div class="max-w-[90%] mx-auto pb-16 pt-24 max-md:py-10">
             <div class="flex items-center justify-between mb-5">
-                <h1 class="text-2xl font-semibold  max-sm:text-xl ">Mobile Phone </h1>
-                <a href=" #" class="text-blue-900 font-semibold text-lg ml-1 max-sm:text-sm ">
+                <h1 class="text-2xl font-semibold  max-sm:text-xl ">Choose Your Favourite</h1>
+                <!-- <a href=" #" class="text-blue-900 font-semibold text-lg ml-1 max-sm:text-sm ">
                     View All
                     <i class="fas fa-arrow-right"></i>
-                </a>
+                </a> -->
             </div>
 
-            <div id="mobileContainer"
+            <div id="myProducts"
                 class="grid grid-cols-4 gap-2 gap-y-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
 
             </div>
     </section>
 
-    <!-- laptop-->
-    <section id="sports" class="bg-blue-50">
-        <div class="max-w-[90%] mx-auto pb-16 pt-24">
-            <div class="flex items-center justify-between mb-5">
-                <h1 class="text-2xl font-semibold  max-sm:text-xl ">Laptop </h1>
-                <a href=" #" class="text-blue-900 font-semibold text-lg ml-1 max-sm:text-sm ">
-                    View All
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            <div id="laptopContainer"
-                class="grid grid-cols-4 gap-2 gap-y-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
-
-            </div>
-    </section>
+    
 
 
-    <!-- smart-->
-    <section id="sports" class="bg-indigo-50">
-        <div class="max-w-[90%] mx-auto pb-16 pt-24">
-            <div class="flex items-center justify-between mb-5">
-                <h1 class="text-2xl font-semibold  max-sm:text-xl ">Smart Device</h1>
-                <a href=" #" class="text-blue-900 font-semibold text-lg ml-1 max-sm:text-sm ">
-                    View All
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            <div id="smartContainer"
-                class="grid grid-cols-4 gap-2 gap-y-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
-
-            </div>
-    </section>
+   
 
 <div id="footer"></div>
 <script src="main.js"></script>
@@ -97,25 +69,36 @@
 
     <script>
         
-        // render 
-        const mobileContainer = document.getElementById("mobileContainer");
-        const laptopContainer = document.getElementById("laptopContainer");
-        const smartContainer = document.getElementById("smartContainer");
-        const recentlyProduct = document.getElementById("recentlyProduct");
-        for (let i = 0; i < 8; i++) {
+     
+        const myProducts =document.getElementById("myProducts");
+        const recentlyProduct =document.getElementById("recentlyProduct");
 
-            mobileContainer.innerHTML += `
-              <!-- card 1-->
+        async function getAllProduct() {
+      try {      
+            const res =await fetch ("http://localhost:8080/Product/api/products")
+            const data =await res.json();
+      
+        
+
+        let html1 ="";
+        let html2 ="";
+
+        data.forEach(products => {
+
+            // all product display
+            html1 +=`
+            
+            
                     <div
                         class=" p-2 bg-white  rounded-[14px]  shadow-sm hover:-translate-y-1 transition-all hover:shadow-lg">
                         <!-- img part -->
                         <div class="relative pb-4">
                             <img class="w-full h-48 object-cover rounded-[6px] over "
-                                src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c21hcnRwaG9uZXxlbnwwfHwwfHx8MA%3D%3D"
+                                src="${products.image}"
                                 alt="">
                             <div
                                 class="absolute top-2 left-2 text-white bg-red-500 h-8 w-14 rounded-sm flex items-center justify-center text-sm font-semibold">
-                                -30%
+                        -${products.discount} %
                             </div>
                             <button
                                 class="absolute top-2 right-2 h-10 w-10 rounded-full bg-white flex items-center justify-center">
@@ -125,20 +108,20 @@
                         <!-- details part -->
                         <div class="flex flex-col gap-2 px-3 ">
                             <div class="flex justify-between items-center">
-                                <h1 class="text-lg font-semibold">Premium Mobile Phone</h1>
+                                <h1 class="text-lg font-semibold">${products.title}</h1>
                                 <p class="font-semibold">
-                                    4.5
+                                    ${products.rating}
                                     <i class="fa-solid fa-star text-yellow-400"></i>
 
                                 </p>         
                             </div>
                             <p class="text-sm text-gray-500 font-semibold">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo nisi, blanditiis atque 
+                             ${products.description}
                               
                             </p>
                             <div class="flex items-center gap-3">
-                                <p class="text-xl font-bold">&#8377; 499</p>
-                                <p class="text-lg line-through text-gray-500 font-semibold">&#8377; 999</p>
+                                <p class="text-xl font-bold">₹ ${products.price}</p>
+                                
                             </div>
                             <button class="bg-blue-800 py-1 text-white font-semibold rounded-md mb-3">
                                 Add to Cart
@@ -146,120 +129,21 @@
                         </div>
                     </div>
             
-            `;
+            `;       
+        });
 
-
-
-            //    laptop
-
-            laptopContainer.innerHTML += `
-              <!-- card 1-->
-                    <div
-                        class=" p-2 bg-white  rounded-[14px]  shadow-sm hover:-translate-y-1 transition-all hover:shadow-lg">
-                        <!-- img part -->
-                        <div class="relative pb-4">
-                            <img class="w-full h-48 object-cover rounded-[6px] over "
-                                src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bGFwdG9wfGVufDB8fDB8fHww"
-                                alt="">
-                            <div
-                                class="absolute top-2 left-2 text-white bg-red-500 h-8 w-14 rounded-sm flex items-center justify-center text-sm font-semibold">
-                                -30%
-                            </div>
-                            <button
-                                class="absolute top-2 right-2 h-10 w-10 rounded-full bg-white flex items-center justify-center">
-                                <i class="far fa-heart text-gray-600"></i>
-                            </button>
-                        </div>
-                        <!-- details part -->
-                        <div class="flex flex-col gap-2 px-3 ">
-                            <div class="flex justify-between items-center">
-                                <h1 class="text-lg font-semibold">Premium Laptop</h1>
-                                <p class="font-semibold">
-                                    4.5
-                                    <i class="fa-solid fa-star text-yellow-400"></i>
-
-                                </p>         
-                            </div>
-                            <p class="text-sm text-gray-500 font-semibold">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo nisi, blanditiis atque 
-                              
-                            </p>
-                            <div class="flex items-center gap-3">
-                                <p class="text-xl font-bold">&#8377; 499</p>
-                                <p class="text-lg line-through text-gray-500 font-semibold">&#8377; 999</p>
-                            </div>
-                            <button class="bg-blue-800 py-1 text-white font-semibold rounded-md mb-3">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-            
-            `;
-
-
-
-            // smart container
-
-            smartContainer.innerHTML += `
-              <!-- card 1-->
-                    <div
-                        class=" p-2 bg-white  rounded-[14px]  shadow-sm hover:-translate-y-1 transition-all hover:shadow-lg">
-                        <!-- img part -->
-                        <div class="relative pb-4">
-                            <img class="w-full h-48 object-cover rounded-[6px] over "
-                                src="https://images.unsplash.com/photo-1517420879524-86d64ac2f339?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNtYXJ0JTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D"
-                                alt="">
-                            <div
-                                class="absolute top-2 left-2 text-white bg-red-500 h-8 w-14 rounded-sm flex items-center justify-center text-sm font-semibold">
-                                -30%
-                            </div>
-                            <button
-                                class="absolute top-2 right-2 h-10 w-10 rounded-full bg-white flex items-center justify-center">
-                                <i class="far fa-heart text-gray-600"></i>
-                            </button>
-                        </div>
-                        <!-- details part -->
-                        <div class="flex flex-col gap-2 px-3 ">
-                            <div class="flex justify-between items-center">
-                                <h1 class="text-lg font-semibold">Premium Watch</h1>
-                                <p class="font-semibold">
-                                    4.5
-                                    <i class="fa-solid fa-star text-yellow-400"></i>
-
-                                </p>         
-                            </div>
-                            <p class="text-sm text-gray-500 font-semibold">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo nisi, blanditiis atque 
-                              
-                            </p>
-                            <div class="flex items-center gap-3">
-                                <p class="text-xl font-bold">&#8377; 499</p>
-                                <p class="text-lg line-through text-gray-500 font-semibold">&#8377; 999</p>
-                            </div>
-                            <button class="bg-blue-800 py-1 text-white font-semibold rounded-md mb-3">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-            
-            `;
-
-
-        }
-
-
-        for (let i = 0; i < 10; i++) {
-            recentlyProduct.innerHTML += `
-   
-                    <div class=" p-2 bg-white min-w-64 rounded-[14px] shadow-sm">
+        // second dom recently product
+        data.slice(0,10).forEach(product =>{
+            html2 +=`
+                 <div class=" p-2 bg-white min-w-64 rounded-[14px] shadow-sm">
                         <!-- img part -->
                         <div class="relative pb-4">
                             <img class="w-full h-40 rounded-[6px] object-cover "
-                                src="https://images.unsplash.com/photo-1517420879524-86d64ac2f339?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNtYXJ0JTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D"
+                                src="${product.image}"
                                 alt="">
                             <div
                                 class="absolute top-2 left-2 text-white bg-red-500 h-8 w-14 rounded-sm flex items-center justify-center text-sm font-semibold">
-                                -35%</div>
+                                -${product.discount}%</div>
                             <button
                                 class="absolute top-2 right-2 h-10 w-10 rounded-full bg-white flex items-center justify-center">
                                 <i class="far fa-heart text-gray-600"></i>
@@ -267,20 +151,20 @@
                         </div>
                         <div class="flex flex-col gap-2 px-3 ">
                             <div class="flex justify-between items-center">
-                                <h1 class="text-lg font-semibold">Premium Watch</h1>
+                                <h1 class="text-lg font-semibold">${product.title}</h1>
                                 <p class="font-semibold">
-                                    4.5
+                                    ${product.rating}
                                     <i class="fa-solid fa-star text-yellow-400"></i>
 
                                 </p>         
                             </div>
                             <p class="text-sm text-gray-500 font-semibold">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                              ${product.description}
                               
                             </p>
                             <div class="flex items-center gap-3">
-                                <p class="text-xl font-bold">&#8377; 499</p>
-                                <p class="text-lg line-through text-gray-500 font-semibold">&#8377; 999</p>
+                                <p class="text-xl font-bold">${product.price}</p>
+                               
                             </div>
                             <button class="bg-blue-800 py-1 text-white font-semibold rounded-md mb-3">
                                 Add to Cart
@@ -288,9 +172,24 @@
                         </div>
                     </div>
    
-   `;
+            `;
 
-        }
+        } );
+   
+    
+    myProducts.innerHTML =html1;
+    recentlyProduct.innerHTML=html2;
+
+    }
+
+    catch(err){
+        console.log(err);
+        myProducts.innerHTML = `<p class="text-red-500">Load failed</p>
+        `;
+        
+    }
+}  
+     getAllProduct();
 
     </script>
 </body>

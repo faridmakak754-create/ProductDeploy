@@ -3,15 +3,15 @@
 // =======================
 
 fetch("header.html")
-.then(response => response.text())
-.then(data => {
+    .then(response => response.text())
+    .then(data => {
 
-    document.getElementById("header").innerHTML = data;
+        document.getElementById("header").innerHTML = data;
 
-    // run navbar update AFTER header loads
-    updateNavbar();
+        // run navbar update AFTER header loads
+        updateNavbar();
 
-});
+    });
 
 
 // =======================
@@ -19,12 +19,12 @@ fetch("header.html")
 // =======================
 
 fetch("footer.html")
-.then(response => response.text())
-.then(data => {
+    .then(response => response.text())
+    .then(data => {
 
-    document.getElementById("footer").innerHTML = data;
+        document.getElementById("footer").innerHTML = data;
 
-});
+    });
 
 
 // =======================
@@ -47,37 +47,37 @@ function openClose() {
 // Navbar Update (Login / Logout)
 // =======================
 
-function updateNavbar(){
+function updateNavbar() {
 
     const loggedIn = localStorage.getItem("loggedIn");
 
-    const authLink = document.getElementById("authLink");
-    const dashboardLink = document.getElementById("dashboardLink");
+    const authLinkDesktop = document.getElementById("authLinkDesktop");
+    const authBtnDesktop = document.getElementById("authBtnDesktop");
+    const dashboardLinkDesktop = document.getElementById("dashboardLinkDesktop");
 
-    if(!authLink || !dashboardLink) return;
+    const authLinkMobile = document.getElementById("authLinkMobile");
+    const authBtnMobile = document.getElementById("authBtnMobile");
+    const dashboardLinkMobile = document.getElementById("dashboardLinkMobile");
 
-    if(loggedIn){
+    if (loggedIn) {
 
-        // change Login → Logout
-        authLink.textContent = "Logout";
-        authLink.href = "#";
+        // Desktop
+        authLinkDesktop.textContent = "Logout";
+        authLinkDesktop.href = "#";
+        dashboardLinkDesktop.classList.remove("hidden");
+        authBtnDesktop.classList.remove("bg-blue-600");
+        authBtnDesktop.classList.add("bg-red-600");
 
-        // show dashboard link
-        dashboardLink.classList.remove("hidden");
+        // Mobile
+        authLinkMobile.textContent = "Logout";
+        authLinkMobile.href = "#";
+        dashboardLinkMobile.classList.remove("hidden");
+        authBtnMobile.classList.remove("bg-blue-600");
+        authBtnMobile.classList.add("bg-red-600");
 
-        authBtn.classList.remove("bg-blue-600");
-        authBtn.classList.add("bg-red-600")
-
-        // logout event
-        authLink.onclick = function(e){
-
-            e.preventDefault();
-            logout();
-
-        };
-
+        authLinkDesktop.onclick = logout;
+        authLinkMobile.onclick = logout;
     }
-
 }
 
 
@@ -89,13 +89,13 @@ function logout() {
     fetch("http://localhost:8080/Product/api/logout", {
         method: "POST"
     })
-    .then(res => res.json())
-    .then(data => {
+        .then(res => res.json())
+        .then(data => {
 
-        localStorage.removeItem("token");
-        localStorage.removeItem("loggedIn"); // IMPORTANT
+            localStorage.removeItem("token");
+            localStorage.removeItem("loggedIn"); // IMPORTANT
 
-        window.location.href = "login.html";
-    });
+            window.location.href = "login.html";
+        });
 
 }
