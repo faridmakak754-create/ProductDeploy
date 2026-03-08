@@ -33,6 +33,9 @@
     <!-- upload -->
     <section class="max-w-4xl mx-auto my-10  bg-gradient-to-br rounded-lg shadow-sm bg-white border border-gray-200 ">
         <h1 class="text-center py-4 font-semibold text-2xl">Upload Your Item</h1>
+        <div id="display">
+
+        </div>
         <form onsubmit="handleSubmit(event)" class="grid grid-cols-2 max-[890px]:grid-cols-1 ">
             <div class="p-6">
 
@@ -51,7 +54,7 @@
                     </div>
                     <p id="fileName" class="text-sm text-green-600 mt-2"></p>
                 </label>
-                <input id="fileInput" type="file" name="file" required class="hidden">
+                <input id="fileInput" type="file" name="image" required class="hidden">
             </div>
 
             <!-- right side -->
@@ -69,12 +72,12 @@
 
                 </div>
 
-                <!-- Name -->
+                <!-- Title-->
                 <div class=" flex  items-center gap-4 relative">
                     <label for="name"
                         class="font-semibold w-28 shrink-0  max-[408px]:w-19 max-[408px]:text-sm ">Title:</label>
                     <div class="relative w-full">
-                        <input id="name" type="text" placeholder="Enter Your Tittle" name="name"
+                        <input id="name" type="text" placeholder="Enter Your Tittle" name="title"
                             class=" bg-white w-full outline-none py-2 px-6 rounded-full italic border  border-gray-400 focus:border-blue-600  max-[500px]:text-sm max-[340px]:px-1">
                         <i class=" fa-solid fa-tag absolute right-3 top-1/2 -translate-y-1/2 text-blue-400"></i>
                     </div>
@@ -99,7 +102,7 @@
                     <label for="discount"
                         class="font-semibold w-28 shrink-0 max-[408px]:w-19 max-[408px]:text-sm">Discount %: </label>
                     <div class="relative w-full">
-                        <input id="discount" type="number" placeholder="Enter Your Discount" name="category"
+                        <input id="discount" type="number" placeholder="Enter Your Discount" name="discount"
                             class=" bg-white w-full outline-none py-2 px-6 rounded-full italic border  border-gray-400 focus:border-blue-600  max-[500px]:text-sm max-[340px]:px-1">
                         <i class=" fa-solid fa-percent absolute right-2 top-1/2 -translate-y-1/2 text-blue-400"></i>
                     </div>
@@ -110,7 +113,7 @@
                     <label for="rating" class="font-semibold w-28 shrink-0  max-[408px]:w-19 max-[408px]:text-sm">Rating
                         :</label>
                     <div class="relative w-full">
-                        <input id="rating" type="number" placeholder="Enter Your Rating" name="category"
+                        <input id="rating" type="number" placeholder="Enter Your Rating" name="rating"
                             class=" bg-white w-full outline-none py-2 px-6 rounded-full italic border  border-gray-400 focus:border-blue-600  max-[500px]:text-sm max-[340px]:px-1">
                         <i class=" fa-solid fa-star absolute right-2 top-1/2 -translate-y-1/2 text-blue-400"></i>
                     </div>
@@ -122,7 +125,7 @@
                         class="font-semibold w-28 shrink-0  max-[408px]:w-19 max-[408px]:text-sm">Description:</label>
                     <div class="relative w-full">
 
-                        <input id="description" type="text" placeholder="Enter Your Description" name="category"
+                        <input id="description" type="text" placeholder="Enter Your Description" name="description"
                             class=" bg-white  w-full outline-none py-2 px-6 italic rounded-full border  border-gray-400 focus:border-blue-600  max-[500px]:text-sm max-[340px]:px-1 ">
                         <i class=" fa-solid fa-align-left absolute right-2 top-1/2 -translate-y-1/2 text-blue-400"></i>
                     </div>
@@ -133,7 +136,7 @@
                     <label for="madeIn"
                         class="font-semibold w-28 shrink-0  max-[408px]:w-19 max-[408px]:text-sm">MadeIn:</label>
                     <div class="w-full relative ">
-                        <input id="madeIn" type="text" placeholder="Enter Made In Country" name="category"
+                        <input id="madeIn" type="text" placeholder="Enter Made In Country" name="madeIn"
                             class=" bg-white w-full outline-none py-2 px-4 rounded-full italic border  border-gray-400 focus:border-blue-600   max-[500px]:text-sm max-[340px]:px-1 ">
                         <i
                             class=" fa-solid fa-globe absolute right-2 top-1/2 -translate-y-1/2 text-blue-400  max-[370pxpx]:text-sm "></i>
@@ -142,8 +145,12 @@
                 </div>
 
                 <div class="flex items-center justify-center max-[890px]:justify-end">
-                    <button type="submit"
-                        class="bg-blue-400 w-60  mt-5 py-2 rounded-md font-semibold text-white ">Submit</button>
+                    <button id="submitBtn" type="submit"
+                        class="bg-blue-400 w-60  mt-5 py-2 rounded-md font-semibold text-white cursor-pointer ">
+                        <span id="btnText">Submit</span>
+                        <i id="spinner" class="fas fa-sync fa-spin   hidden"></i>
+
+                    </button>
                 </div>
 
 
@@ -156,9 +163,9 @@
     <section class="bg-white">
         <div class="max-w-[90%] mx-auto pb-16 pt-24">
             <h1 class="text-xl font-semibold pb-6">Recently Added Products</h1>
-            <div id="recentlyProduct" class="flex gap-3 overflow-x-scroll no-scrollbar">
+            <div id="myProduct" class="flex gap-3 overflow-x-scroll no-scrollbar">
 
-                <!-- render -->
+               
 
 
             </div>
@@ -167,8 +174,14 @@
     <script src="main.js"></script>
     <script>
 
-        // file-drag
+        // check login using token
+        const token = localStorage.getItem("token");
 
+        if (!token) {
+            window.location.href = "login.html";
+        }
+
+        // Handle file drag and input
         const box = document.querySelector("label[for='fileInput']");
         const input = document.getElementById("fileInput");
         const text = document.getElementById("fileName");
@@ -182,24 +195,127 @@
         };
 
         input.onchange = () => {
-            text.textContent = input.files[0].name;
+            if (input.files.length > 0) {
+                text.textContent = input.files[0].name;
+            }
         };
 
 
+        // Handle form submit
+        async function handleSubmit(e) {
 
-        // recently product
-        for (let i = 0; i < 10; i++) {
-            recentlyProduct.innerHTML += `
-   
-                    <div class=" p-2 bg-white min-w-64 rounded-[14px] shadow-sm">
+            e.preventDefault();
+
+            const display = document.getElementById("display");
+            const spinner = document.getElementById("spinner");
+            const btnText = document.getElementById("btnText");
+            const submitBtn = document.getElementById("submitBtn");
+
+            const file = e.target.image.files[0];
+
+            if (!file) {
+                display.innerHTML = `<p class="text-red-500 text-center">Please select an image</p>`;
+                return;
+            }
+
+            // loading
+            spinner.classList.remove("hidden");
+            btnText.textContent = "Processing...";
+            submitBtn.disabled = true;
+
+            const reader = new FileReader();
+
+            reader.onload = async function () {
+
+                const uploadProducts = {
+                    category: e.target.category.value,
+                    title: e.target.title.value,
+                    price: parseFloat(e.target.price.value),
+                    discount: parseFloat(e.target.discount.value),
+                    rating: parseFloat(e.target.rating.value),
+                    description: e.target.description.value,
+                    madeIn: e.target.madeIn.value,
+                    image: reader.result
+                };
+
+                try {
+
+                    const res = await fetch("http://localhost:8080/Product/api/products", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + token
+                        },
+                        body: JSON.stringify(uploadProducts)
+                    });
+
+                    let data;
+
+                    try {
+                        data = await res.json();
+                    } catch (err) {
+                        const text = await res.text();
+                        console.error("Server returned non-JSON:", text);
+                        display.innerHTML = `<p class="text-red-500 text-center">Server returned invalid JSON</p>`;
+                        return;
+                    }
+
+                    if (res.ok) {
+                        display.innerHTML = `<p class="text-green-500 text-center">${data.message || "Success"}</p>`;
+                        loadProducts();
+                    } else {
+                        display.innerHTML = `<p class="text-red-500 text-center">${data.message || "Failed"}</p>`;
+                    }
+
+                } catch (error) {
+
+                    console.error(error);
+                    display.innerHTML = `<p class="text-red-500 text-center">Server connection failed</p>`;
+
+                } finally {
+                    spinner.classList.add("hidden");
+                    btnText.textContent = "Submit";
+                    submitBtn.disabled = false;
+                    e.target.value.reset();
+                    
+                }
+
+            };
+
+            reader.readAsDataURL(file);
+         
+     
+          
+        }
+        
+     loadProducts();
+
+        // fetch product 
+
+        async  function loadProducts(){
+            const myProduct =document.getElementById("myProduct");
+
+           try {
+            const res =await fetch ("http://localhost:8080/Product/api/my-products",{
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+            const data =await res.json();
+            myProduct.innerHTML ="";
+
+            data.forEach(products => {
+                myProduct.innerHTML +=`
+                 <div class=" p-2 bg-white min-w-64 rounded-[14px] shadow-sm">
                         <!-- img part -->
                         <div class="relative pb-4">
                             <img class="w-full h-40 rounded-[6px] object-cover "
-                                src="https://images.unsplash.com/photo-1517420879524-86d64ac2f339?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNtYXJ0JTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D"
+                                src="${products.image}"
                                 alt="">
                             <div
                                 class="absolute top-2 left-2 text-white bg-red-500 h-8 w-14 rounded-sm flex items-center justify-center text-sm font-semibold">
-                                -35%</div>
+                        ${products.discount} %</div>
                             <button
                                 class="absolute top-2 right-2 h-10 w-10 rounded-full bg-white flex items-center justify-center">
                                 <i class="far fa-heart text-gray-600"></i>
@@ -207,29 +323,40 @@
                         </div>
                         <div class="flex flex-col gap-2 px-3 ">
                             <div class="flex justify-between items-center">
-                                <h1 class="text-lg font-semibold">Premium Watch</h1>
+                                <h1 class="text-lg font-semibold">${products.title}</h1>
                                 <p class="font-semibold">
-                                    4.5
+                                    ${products.rating}
                                     <i class="fa-solid fa-star text-yellow-400"></i>
 
                                 </p>         
                             </div>
                             <p class="text-sm text-gray-500 font-semibold">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                              ${products.description}
                               
                             </p>
                             <div class="flex items-center gap-3">
-                                <p class="text-xl font-bold">&#8377; 499</p>
-                                <p class="text-lg line-through text-gray-500 font-semibold">&#8377; 999</p>
+                                <p class="text-xl font-bold">₹ ${products.price}</p>
+                                <p class="text-lg  text-gray-500 font-semibold">${products.madeIn}</p>
                             </div>
                             <button class="bg-blue-800 py-1 text-white font-semibold rounded-md mb-3">
-                                Add to Cart
+                             Add to Cart
                             </button>
                         </div>
                     </div>
-   
-   `;
 
+
+                `;
+
+                
+            });
+            
+           }
+           catch(error){
+
+            console.log(error);
+            myProduct.innerHTML ='<p class="text-red-500">Load failed</p>'
+            
+           }
         }
 
     </script>

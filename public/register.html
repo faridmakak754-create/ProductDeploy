@@ -11,86 +11,152 @@
 </head>
 
 <body>
-<div id="header"></div>
+    <div id="header"></div>
 
     <section class="max-w-[90%] mx-auto">
         <div class="max-w-100 mx-auto my-20 shadow-sm rounded-xl border border-black/5 aspect-square  p-5 space-y-2">
             <div>
                 <h1 class="text-2xl text-blue-800">Start Your Journey !</h1>
                 <p class="text-sm text-gray-400">Please enter your details </p>
+                <div id="display">
+
+                </div>
+
+
             </div>
-            
-            <form class=" grid gap-4  ">
-                <!-- email -->
+
+            <form onsubmit="handleSubmit(event)" class=" grid gap-4  ">
+                <!-- name-->
                 <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center ">
                     <legend class="px-2 text-sm text-gray-600 font-medium ">Name</legend>
-                    <input type="email" placeholder="Enter your name" class="w-full outline-none  px-3">
+                    <input type="text" placeholder="Enter your name" name="name" class="w-full outline-none  px-3">
                     <i class="fa-solid fa-user pr-3 text-blue-400"></i>
                 </fieldset>
 
                 <!-- email -->
                 <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center ">
                     <legend class="px-2 text-sm text-gray-600 font-medium ">Email</legend>
-                    <input type="email" placeholder="example@gmail.com" class="w-full outline-none  px-3">
+                    <input type="email" name="email" placeholder="example@gmail.com" class="w-full outline-none  px-3">
                     <i class="fa-solid fa-envelope pr-3 text-blue-400"></i>
                 </fieldset>
 
                 <!-- password -->
                 <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center">
                     <legend class="px-2 text-sm text-gray-600 font-medium">Password</legend>
-                    <input type="password"
-                    id="password"
-                     placeholder="*******" 
-                     class="w-full outline-none px-3 "
-                     >
-                    <i id="eye" 
-                    class="fa-solid fa-eye pr-3 text-blue-400 cursor-pointer"
-                    onclick="togglePassword()"
-                    >
-                
-                </i>
+                    <input type="password" name="password" id="password" placeholder="*******"
+                        class="w-full outline-none px-3 ">
+                    <i id="eye" class="fa-solid fa-eye pr-3 text-blue-400 cursor-pointer" onclick="togglePassword()">
+
+                    </i>
 
                 </fieldset>
 
                 <!-- submit -->
-                <button
-                    type="submit" 
-                    class="bg-blue-500 py-2 text-white font-medium mt-4 mb-2 rounded-md">
-                    Sign Up
-                 </button>
-                 <a href="login.html"
-                     class= "text-center"
-                >
+                <button id="submitBtn" type="submit"
+                    class="bg-blue-500 py-2 text-white font-medium mt-4 mb-2 rounded-md cursor-pointer flex items-center justify-center gap-2">
+
+                    <span id="btnText">Sign Up</span>
+                    <i id="spinner" class="fas fa-sync fa-spin  animate-spin hidden"></i>
+
+                </button>
+                <a href="login.html" class="text-center">
                     Already have an account
                     <span class="text-blue-600 font-semibold">
                         Login
                     </span>
-                
+
                 </a>
-            
+
 
             </form>
-           
+
         </div>
     </section>
     <div id="footer"></div>
     <script src="main.js"></script>
     <script>
 
-        function togglePassword(){
-            const password =document.getElementById("password");
-            const eye =document.getElementById("eye");
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const eye = document.getElementById("eye");
 
-            if(password.type ==="password"){
-                password.type ="text";
+            if (password.type === "password") {
+                password.type = "text";
                 eye.classList.replace("fa-eye", "fa-eye-slash");
             }
-            else{
-                password.type ="password";
+            else {
+                password.type = "password";
                 eye.classList.replace("fa-eye-slash", "fa-eye");
             }
         }
-    </script>uuuu
+
+        //    sent to backend
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            const display = document.getElementById("display");
+            const spinner = document.getElementById("spinner");
+            const btnText = document.getElementById("btnText");
+            const submitBtn = document.getElementById("submitBtn");
+
+            const userRegister = {
+                name: e.target.name.value,
+                email: e.target.email.value,
+                password: e.target.password.value
+            };
+
+            // show loading
+            spinner.classList.remove("hidden");
+            btnText.textContent = "Processing...";
+            submitBtn.disabled = true;
+
+            try {
+
+                const res = await fetch("http://localhost:8080/Product/api/user/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(userRegister)
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    display.innerHTML =
+                        `<p class="text-sm font-semibold text-green-500 text-center">${data.message}</p>`;
+
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1500);
+
+                } else {
+                    display.innerHTML =
+                        `<p class="text-sm font-semibold text-red-500 text-center">${data.message}</p>`;
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                display.innerHTML =
+                    `<p class="text-sm font-semibold text-red-500 text-center">
+            Server connection failed
+            </p>`;
+
+            } finally {
+
+                // hide loading
+                spinner.classList.add("hidden");
+                btnText.textContent = "Sign Up";
+                submitBtn.disabled = false;
+
+            }
+        }
+
+
+    </script>
 </body>
 
 </html>

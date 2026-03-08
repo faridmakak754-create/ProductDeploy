@@ -17,79 +17,152 @@
             <div>
                 <h1 class="text-2xl text-blue-800">Welcome Back !</h1>
                 <p class="text-sm text-gray-400">Please enter your details </p>
+                <div id="display">
+
+                </div>
+
             </div>
-            
-            <form class=" grid gap-4  ">
+
+            <form onsubmit="handleSubmit(event)" class=" grid gap-4  ">
                 <!-- email -->
                 <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center ">
                     <legend class="px-2 text-sm text-gray-600 font-medium ">Email</legend>
-                    <input type="email" placeholder="example@gmail.com" class="w-full outline-none  px-3">
+                    <input type="email" placeholder="example@gmail.com" name="email" class="w-full outline-none  px-3">
                     <i class="fa-solid fa-envelope pr-3 text-blue-400"></i>
                 </fieldset>
 
                 <!-- password -->
                 <fieldset class="border p-1 rounded border-blue-600 flex justify-between items-center">
                     <legend class="px-2 text-sm text-gray-600 font-medium">Password</legend>
-                    <input type="password"
-                    id="password"
-                     placeholder="*******" 
-                     class="w-full outline-none px-3 "
-                     >
-                    <i id="eye" 
-                    class="fa-solid fa-eye pr-3 text-blue-400 cursor-pointer"
-                    onclick="togglePassword()"
-                    >
-                
-                </i>
+                    <input type="password" name="password" id="password" placeholder="*******"
+                        class="w-full outline-none px-3 ">
+                    <i id="eye" class="fa-solid fa-eye pr-3 text-blue-400 cursor-pointer" onclick="togglePassword()">
+
+                    </i>
 
                 </fieldset>
 
                 <div class="flex justify-between">
                     <div class="flex items-center gap-2">
                         <input type="checkbox" id="remember">
-                       <label for="remember">Remember me</label>
+
+                        <label for="remember">Remember me</label>
                     </div>
-                    
+
                     <a href="" class="text-blue-700 ">
                         forgot password ?
                     </a>
                 </div>
 
+
                 <!-- submit -->
-                <button
-                    type="submit" 
-                    class="bg-blue-500 py-2 text-white font-medium mt-4 mb-2 rounded-md">
-                    Login
-                 </button>
-                 <a href="register.html"
-                     class= "text-center"
-                >
-                        Don't have an account? 
-                        <span class="text-blue-600 font-semibold">
-                            Register
-                         </span>
+                <button id="submitBtn" type="submit"
+                    class="bg-blue-500 py-2 text-white font-medium mt-4 mb-2 rounded-md cursor-pointer flex items-center justify-center gap-2">
+
+                    <span id="btnText">Login</span>
+                    <i id="spinner" class="fas fa-sync fa-spin   hidden"></i>
+
+                </button>
+                <a href="register.html" class="text-center">
+                    Don't have an account?
+                    <span class="text-blue-600 font-semibold">
+                        Register
+                    </span>
                 </a>
             </form>
-           
+
         </div>
     </section>
     <div id="footer"></div>
     <script src="main.js"></script>
     <script>
 
-        function togglePassword(){
-            const password =document.getElementById("password");
-            const eye =document.getElementById("eye");
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const eye = document.getElementById("eye");
 
-            if(password.type ==="password"){
-                password.type ="text";
+            if (password.type === "password") {
+                password.type = "text";
                 eye.classList.replace("fa-eye", "fa-eye-slash");
-            }
-            else{
-                password.type ="password";
+            } else {
+                password.type = "password";
                 eye.classList.replace("fa-eye-slash", "fa-eye");
             }
         }
+
+        // send to backend
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            const display = document.getElementById("display");
+            const spinner = document.getElementById("spinner");
+            const btnText = document.getElementById("btnText");
+            const submitBtn = document.getElementById("submitBtn");
+
+            const userLogin = {
+                email: e.target.email.value,
+                password: e.target.password.value
+            };
+
+            // show loading
+            spinner.classList.remove("hidden");
+            btnText.textContent = "Processing...";
+            submitBtn.disabled = true;
+
+            try {
+
+                const res = await fetch("http://localhost:8080/Product/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(userLogin)
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+
+                    const role = data.role;
+                    const token = data.token;
+
+                    // save login state
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("role", role);
+                    localStorage.setItem("loggedIn", "true");
+
+                    if (role === "USER") {
+                        window.location.href = "index.html";
+                    } else {
+                        window.location.href = "adminDashboard.html";
+                    }
+
+                } else {
+
+                    display.innerHTML =
+                        `<p class="text-sm font-semibold text-red-500 text-center">
+                ${data.message}
+            </p>`;
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                display.innerHTML =
+                    `<p class="text-sm font-semibold text-red-500 text-center">
+            Server connection failed
+        </p>`;
+
+            } finally {
+
+                // hide loading
+                spinner.classList.add("hidden");
+                btnText.textContent = "Login";
+                submitBtn.disabled = false;
+            }
+        }
+
     </script>
 </body>
 
