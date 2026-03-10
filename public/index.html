@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="photo/profile.jpg" type="image/x-icon">
     <title>FDD Store</title>
 
     <style>
@@ -330,21 +331,27 @@
     <script>
         const featuredProducts = document.getElementById("featuredProducts");
         const testimonal =document.getElementById("testimonal")
-        for (let i = 0; i < 8; i++) {
-            //    laptop
+       
 
-            featuredProducts.innerHTML += `
-              <!-- card 1-->
-                    <div
-                        class=" p-2 bg-white  rounded-[14px]  shadow-sm hover:-translate-y-1 transition-all hover:shadow-lg">
+        async function getAllProduct() {
+            try{
+
+                const res= await fetch ("http://localhost:8080/Product/api/products");
+                const data = await res.json();
+
+                let html ="";
+                data.slice(0,8).forEach(products => {
+                    html+=`
+                    
+                        <div class="p-2 bg-white rounded-[14px] shadow-sm hover:-translate-y-1 transition-all hover:shadow-lg flex flex-col h-full">
                         <!-- img part -->
                         <div class="relative pb-4">
                             <img class="w-full h-48 object-cover rounded-[6px] over "
-                                src="https://www.jouav.com/wp-content/uploads/2022/07/CW-25H-banner3-1024x576.jpg"
+                                src="${products.image}"
                                 alt="">
                             <div
                                 class="absolute top-2 left-2 text-white bg-red-500 h-8 w-14 rounded-sm flex items-center justify-center text-sm font-semibold">
-                                -30%
+                        -${products.discount} %
                             </div>
                             <button
                                 class="absolute top-2 right-2 h-10 w-10 rounded-full bg-white flex items-center justify-center">
@@ -353,34 +360,53 @@
                         </div>
                         <!-- details part -->
                         <div class="flex flex-col gap-2 px-3 ">
-                            <div class="flex justify-between items-center gap-2">
-                                <h1 class="text-lg font-semibold max-lg:text-base ">Gasoline drones</h1>
-                                <p class="font-semibold max-md:text-sm">
-                                    4.5
-                                    <i class="fa-solid fa-star text-yellow-400 "></i>
+                            <div class="flex items-center gap-2">
+                                <h1 class="text-lg font-semibold truncate flex-1 min-w-0">
+                                    ${products.title}
+                                </h1>
 
-                                </p>         
+                                <p class="font-semibold whitespace-nowrap">
+                                    ${products.rating}
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                </p>
                             </div>
-                            <p class="text-sm text-gray-500 font-semibold max-sm:font-normal">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo nisi, blanditiis atque 
-                              
+                            <p class="text-sm text-gray-500 font-semibold line-clamp-2 description min-h-10">
+                                ${products.description}
                             </p>
+
+                           
                             <div class="flex items-center gap-3">
-                                <p class="text-xl font-bold max-sm:text-base">₹ 499</p>
-                                <p class="text-lg line-through text-gray-500 font-semibold max-sm:text-base">₹ 999</p>
+                                <p class="text-xl font-bold">₹ ${products.price}</p>
+                                
                             </div>
-                            <button class="bg-blue-800 py-1 text-white font-semibold rounded-md mb-3">
-                                Add to Cart
+                            <button onclick="viewProduct(${products.id})"
+                                class="bg-blue-800 py-1.5 text-white font-semibold rounded-md my-3">
+                                    View Details
                             </button>
                         </div>
                     </div>
+                    
+                    `;     
+                });
+
+                featuredProducts.innerHTML =html;
+                
+            }
+            catch(error){
+
+                console.log(error);
+
+                featuredProducts.innerHTML=`<p class="text-red-500 text-center"> Load Failed</p>`;
+            }
             
-            `;
-
-
-
-
         }
+
+        getAllProduct();
+          function viewProduct(id){
+
+    window.location.href = "productdetails.html?id=" + id;
+
+}
 
         for (let index = 0; index < 4; index++) {
             testimonal.innerHTML +=`
@@ -414,8 +440,6 @@
 
 
             `;
-
-          
             
         }
 

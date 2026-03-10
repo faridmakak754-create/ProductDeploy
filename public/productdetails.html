@@ -13,80 +13,83 @@
 
 
 
-<div id="header"></div>
-    <section
+    <div id="header"></div>
+    <section id="productDetails"
         class=" max-w-5xl mx-auto p-6 max-sm:p-2 grid grid-cols-2 max-[900px]:grid-cols-1 gap-6 border border-gray-200  my-8 rounded-lg bg-white shadow-sm max-[900px]:max-w-xl">
-        <!-- left -->
+
+    </section>
+    <div id="footer"></div>
+    <script src="main.js"></script>
+
+
+    <script>
+
+        function increase() {
+            const number = document.getElementById("number");
+            const current = parseInt(number.value);
+
+            if (current < 10) {
+                number.value = current + 1;
+
+            }
+
+        }
+        function decrease() {
+            const number = document.getElementById("number")
+            const current = parseInt(number.value);
+
+            if (current > 0) {
+                number.value = current - 1;
+
+            }
+
+        }
+
+
+
+
+
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+       
+        
+
+        async function loadProduct() {
+
+            try {
+
+               const res = await fetch(`http://localhost:8080/Product/api/products?id=${id}`);
+                const product = await res.json();
+
+                document.getElementById("productDetails").innerHTML = `
+
         <div class="">
             <img class="h-96 w-106 rounded-lg max-[900px]:w-full "
-                src="https://img.freepik.com/free-photo/still-life-wireless-cyberpunk-headphones_23-2151072230.jpg?semt=ais_user_personalization&w=740&q=80"
+                src="${product.image}"
                 alt="">
             <!-- below -->
             <div class="py-6 grid gap-2 ">
-                <!-- up -->
-                <div class="flex justify-between max-sm:flex-col max-sm:gap-2">
-                    <div
-                        class="border border-gray-200 shadow-sm px-6 py-3 flex items-center justify-center gap-4 rounded-md">
-                        <i class="fa-solid fa-battery text-red-400"></i>
-                        <div class="">
-                            <p class="font-semibold">25 hr Battery</p>
-                            <p class="text-sm text-gray-500">with fast charge</p>
-                        </div>
-                    </div>
-                    <div
-                        class="border border-gray-200 shadow-sm px-6 py-3 flex items-center justify-center gap-4 rounded-md">
-                        <i class="fa-brands fa-bluetooth text-blue-500 text-lg"></i>
-                        <div>
-                            <p class="font-semibold">Bluetooth 5.3</p>
-                            <p class="text-sm text-gray-500">Multi Point Connect</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- down -->
-                <div>
-                    <div class="flex justify-between  max-sm:flex-col max-sm:gap-2">
-                        <div
-                            class="border border-gray-200 shadow-sm px-6 py-3 flex items-center justify-center gap-4 rounded-md">
-                            <i class="fa-solid fa-music text-green-400"></i>
-                            <div class="">
-                                <p class="font-semibold">Spatial Audio</p>
-                                <p class="text-sm text-gray-500">Dynamic Trackiing</p>
-                            </div>
-                        </div>
-                        <div
-                            class="border border-gray-200 shadow-sm px-6 py-3 flex items-center justify-center gap-4 rounded-md">
-                            <i class="fa-solid fa-volume-high text-blue-500 text-lg"></i>
-                            <div>
-                                <p class="font-semibold">Hd voice</p>
-                                <p class="text-sm text-gray-500">Ai Noice Cancelling</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
+                <p class="text-lg text-gray-400 font-semibold">Made In ${product.madeIn}</p>
             </div>
         </div>
         <!-- right -->
         <div class="shadow-sm shadow-gray-200 p-6 space-y-2 rounded-md ">
             <div class="flex justify-between items-center gap-3">
                 <p class="bg-blue-300 p-1 rounded-md text-white font-semibold font-mono max-sm:text-sm">In Stock</p>
-                <p class="font-semibold  max-sm:text-sm "><i class="fa-solid fa-star text-yellow-400"></i>4.5 <span
+                <p class="font-semibold  max-sm:text-sm "><i class="fa-solid fa-star text-yellow-400"></i>${product.rating} <span
                         class="text-gray-400 ">(21 reviews)</span>
                 </p>
             </div>
-            <h1 class="text-2xl font-semibold max-sm:text-lg">Monic X pro Headphone</h1>
+            <h1 class="text-2xl font-semibold max-sm:text-lg">${product.title}</h1>
 
-            <p class="text-gray-500 font-semibold max-sm:text-sm">Headphone</p>
+            <p class="text-gray-500 font-semibold max-sm:text-sm">${product.category}</p>
             <div class="flex gap-4">
 
-                <p class="text-red-500 font-semibold text-lg max-sm:text-base">- 22%</p>
-                <p class=" font-semibold text-lg max-sm:text-base ">$259.00</p>
+                <p class="text-red-500 font-semibold text-lg max-sm:text-base">- ${product.discount}%</p>
+                <p class=" font-semibold text-lg max-sm:text-base ">₹ ${product.price}</p>
             </div>
-            <p class="italic text-gray-600 my-6 max-sm:text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing
-                elit.
-                Fuga iste exercitationem sunt vel illum libero ad dolorem doloremque ratione tempora nisi,
-
+            <p class="italic text-gray-600 my-6 max-sm:text-sm">${product.description}
             </p>
 
 
@@ -120,33 +123,22 @@
 
         </div>
 
-    </section>
-<div id="footer"></div>
-<script src="main.js"></script>
-    
-
-    <script>
-       
-        function increase() {
-            const number = document.getElementById("number");
-            const current = parseInt(number.value);
-
-            if (current < 10) {
-                number.value = current + 1;
+        
+      
+        `;
 
             }
+            catch (err) {
 
-        }
-        function decrease() {
-            const number = document.getElementById("number")
-            const current = parseInt(number.value);
-
-            if (current > 0) {
-                number.value = current - 1;
+                console.log(err);
 
             }
-
         }
+
+if (id) {
+            loadProduct();
+        }
+
     </script>
 </body>
 
